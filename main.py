@@ -16,7 +16,10 @@ load_dotenv(ROOT / ".env")
 
 SUPABASE_URL = os.getenv("SUPABASE_URL", "").rstrip("/")
 SUPABASE_KEY = os.getenv("SUPABASE_PUBLISHABLE_KEY", "")
-APP_URL = os.getenv("APP_URL", "http://127.0.0.1:8000").rstrip("/")
+APP_URL = os.getenv(
+    "APP_URL",
+    os.getenv("RENDER_EXTERNAL_URL", "http://127.0.0.1:8000"),
+).rstrip("/")
 REST_RESOURCES = {
     "posts", "public_profiles", "comments", "messages", "point_requests",
     "post_likes", "post_saves", "profiles", "app_settings",

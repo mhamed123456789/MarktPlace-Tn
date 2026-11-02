@@ -38,6 +38,13 @@ La navigation principale est fixée en bas sur mobile et ordinateur. Les vidéos
 
 5. Ouvre <http://127.0.0.1:8000>.
 
+## Déploiement sur Render
+
+1. Envoie le dossier du projet vers un dépôt GitHub, puis dans Render choisis **New → Blueprint** et sélectionne ce dépôt. Le fichier [`render.yaml`](./render.yaml) configure le runtime Python, installe `requirements.txt`, démarre FastAPI avec le port fourni par Render et vérifie `/api/health`.
+2. Pendant la création du service, renseigne `SUPABASE_URL` et `SUPABASE_PUBLISHABLE_KEY` dans les variables d'environnement Render. Ne copie pas le fichier `.env` dans Git et n'utilise jamais une clé `service_role`.
+3. Après le premier déploiement, ajoute l'adresse publique du service (par exemple `https://marketplace-tn.onrender.com`) à **Supabase → Authentication → URL Configuration → Redirect URLs**, avec `/**` à la fin. Render fournit automatiquement cette adresse à l'application pour le retour OAuth; en local, `APP_URL` conserve `http://127.0.0.1:8000`.
+4. Si le service Render existe déjà et affiche `node app.js`, remplace manuellement son **Runtime** par Python, son **Build Command** par `pip install -r requirements.txt` et son **Start Command** par `uvicorn main:app --host 0.0.0.0 --port $PORT`, ou crée le service depuis le Blueprint `render.yaml`.
+
 La clé publishable est destinée au client. Ne mets jamais une clé `service_role` dans le navigateur ou dans un fichier versionné. Supabase limite l'envoi des e-mails avec son service SMTP par défaut. Pour tester rapidement, ouvre **Authentication → Sign In / Providers → Email** et désactive temporairement **Confirm email**; les nouveaux comptes pourront alors se connecter sans envoyer de message. Pour un déploiement réel, garde la confirmation activée et configure ton propre service dans **Authentication → SMTP Settings**. L'interface affiche le délai de réessai reçu de Supabase et évite les demandes répétées pour la même adresse pendant ce délai.
 
 ## Connexion Google
