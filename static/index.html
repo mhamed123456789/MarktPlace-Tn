@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f4f0">
+    <meta name="description" content="Marketplace TN — découvre les produits et les créateurs tunisiens.">
+    <title>Marketplace TN — Le marché tunisien</title>
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="/assets/styles.css?v=8">
+  </head>
+  <body>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <section id="auth-screen" class="auth-screen">
+      <a class="brand auth-brand" href="/" aria-label="Marketplace TN"><span class="brand-mark">M</span> marketplace<span class="brand-dot"> TN</span></a>
+      <div class="auth-layout">
+        <div class="auth-story">
+          <span class="eyebrow">LE MARKETPLACE TUNISIEN</span>
+          <h1>Ton prochain coup de cœur est <em>juste ici.</em></h1>
+          <p>Découvre des produits près de chez toi, partage tes trouvailles et parle directement aux vendeurs.</p>
+          <div class="story-pills"><span>✦ Créateurs locaux</span><span>✦ Vidéos & photos</span><span>✦ 100% Tunisie</span></div>
+        </div>
+        <form id="auth-form" class="auth-card">
+          <div class="auth-switch"><button type="button" class="tab active" data-auth-mode="login">Connexion</button><button type="button" class="tab" data-auth-mode="signup">Créer un compte</button></div>
+          <h2 id="auth-title">Ravi de te revoir.</h2>
+          <p id="auth-description" class="muted">Connecte-toi pour retrouver ton marché.</p>
+          <label id="name-field" class="field hidden">Ton nom<input name="display_name" maxlength="60" autocomplete="name" placeholder="Ex. Amira Ben Salem"></label>
+          <label class="field">Adresse e-mail<input name="email" type="email" autocomplete="email" required placeholder="toi@exemple.tn"></label>
+          <label class="field">Mot de passe<span class="password-wrap"><input name="password" type="password" minlength="6" autocomplete="current-password" required placeholder="Ton mot de passe"><button id="password-toggle" class="password-toggle" type="button" aria-label="Afficher le mot de passe">Afficher</button></span></label>
+          <div id="password-rules" class="password-rules hidden" aria-live="polite">
+            <span data-rule="length">○ 8 caractères minimum</span><span data-rule="upper">○ Une majuscule (A–Z)</span><span data-rule="lower">○ Une minuscule (a–z)</span><span data-rule="number">○ Un chiffre (0–9)</span><span data-rule="symbol">○ Un symbole (!@#...)</span>
+          </div>
+          <button id="auth-submit" class="button button-dark full" type="submit" disabled>Se connecter <span>→</span></button>
+          <div class="auth-divider"><span>ou</span></div>
+          <button id="google-signin" class="button google-button full" type="button" disabled><span class="google-g">G</span> Continuer avec Google</button>
+          <aside id="setup-notice" class="setup-notice hidden" role="alert">
+            <strong>Il reste une étape pour démarrer</strong>
+            <p>La base Marketplace TN n'est pas encore installée dans Supabase. Dans Supabase → SQL Editor, ouvre le script ci-dessous, colle-le, puis clique sur Run.</p>
+            <a class="button button-dark" href="/setup.sql">Télécharger le script SQL ↓</a>
+            <button id="check-setup" class="button button-light" type="button">Vérifier après installation</button>
+          </aside>
+          <small class="auth-note">En continuant, tu acceptes de garder Marketplace TN sympa et respectueux 🤍</small>
+          <p id="auth-error" class="form-error" aria-live="polite"></p>
+          <button id="auth-switch-to-login" class="auth-switch-link hidden" type="button" data-auth-mode="login">J'ai déjà un compte · Se connecter</button>
+          <button id="guest-continue" class="auth-switch-link hidden" type="button">Continuer à explorer sans compte</button>
+        </form>
+      </div>
+      <footer class="auth-footer">Fait avec amour en Tunisie <span>✳</span> Marketplace TN</footer>
+    </section>
+
+    <div id="app-shell" class="app-shell hidden">
+      <header class="topbar">
+        <a class="brand" href="#" data-page="feed"><span class="brand-mark">M</span> marketplace<span class="brand-dot"> TN</span></a>
+        <label class="searchbox"><span>⌕</span><input id="search-input" type="search" placeholder="Cherche une pépite..." aria-label="Rechercher dans les produits"><kbd>⌘ K</kbd></label>
+        <div class="top-actions"><button id="guest-login" class="button button-dark hidden" type="button" data-action="require-auth">Connexion</button><button class="points-chip" data-action="points"><span>✦</span><b id="points-balance">2</b><small>pts</small><span class="plus">+</span></button><button id="avatar-button" class="avatar-button" data-page="profile" aria-label="Mon profil">S</button></div>
+      </header>
+      <div class="app-layout">
+        <aside class="sidebar">
+          <span class="sidebar-label">TON ESPACE</span>
+          <button class="nav-link active" data-page="feed"><span>▦</span> Découvrir</button>
+          <button class="nav-link" data-page="saved"><span>♡</span> Mes favoris</button>
+          <button class="nav-link" data-page="messages"><span>▤</span> Messages <i id="message-dot" class="nav-dot hidden"></i></button>
+          <button class="nav-link" data-page="profile"><span>◉</span> Mon profil</button>
+          <div class="sidebar-divider"></div>
+          <span class="sidebar-label">TON MARKET</span>
+          <button class="nav-link" data-action="create"><span>＋</span> Publier un produit</button>
+          <button class="nav-link" data-action="points"><span>✳</span> Gagner des points</button>
+          <button id="admin-nav" class="nav-link hidden" data-page="admin"><span>⌘</span> Administration</button>
+          <div class="sidebar-promo"><div class="promo-star">✳</div><b>Chaque post<br>fait la différence.</b><p>Une photo = 1 point<br>Une vidéo = 2 points</p><button data-action="create">Partager une pépite <span>→</span></button></div>
+          <button class="nav-link logout-link" data-action="logout"><span>↪</span> Déconnexion</button>
+        </aside>
+        <main id="main-content" class="main-content"></main>
+        <aside id="right-rail" class="right-rail"></aside>
+      </div>
+      <nav class="mobile-nav" aria-label="Navigation principale">
+        <button class="active" data-page="feed"><span>⌂</span><small>Découvrir</small></button>
+        <button data-page="saved"><span>♡</span><small>Favoris</small></button>
+        <button class="mobile-create" data-action="create" aria-label="Publier un produit"><span>＋</span></button>
+        <button data-page="messages"><span>▤</span><small>Messages</small></button>
+        <button data-page="profile"><span>◉</span><small>Profil</small></button>
+      </nav>
+      <button id="admin-float" class="admin-float" data-page="admin" aria-label="Ouvrir le tableau de bord administrateur" title="Tableau de bord admin · compte administrateur requis"><span>⌘</span><small>Admin</small></button>
+    </div>
+
+    <div id="modal-root"></div>
+    <script src="/assets/app.js?v=8" defer></script>
+  </body>
+</html>
